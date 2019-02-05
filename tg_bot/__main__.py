@@ -18,28 +18,35 @@ from tg_bot.modules import ALL_MODULES
 from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
-HELP_STRINGS = """
-Hey there! My name is *{}*.
-I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of \
-the things I can help you with.
+PM_START_TEXT = """
+Olá {}, eu sou a {}! Sou um BotQueen que administra grupos
 
-*Main* commands available:
- - /start: start the bot
- - /help: PM's you this message.
- - /help <module name>: PM's you info about that module.
- - /donate: information about how to donate!
+Você pode achar a lista com todos meus comandos digitando /help.
+
+Se você me usa e gostaria de pagar, rsrs, fica à vontade pra dar um /donate e fazer sua doação, tá? me chama de universal e me doa todos seus bens bb. 
+"""
+
+HELP_STRINGS = """
+Iaí mana! Eu me chamo *{}*.
+Sou uma BotQueen pronta pra qualquer serviço, olha só o quanto eu posso fazer por você na luz do dia.
+
+*Principais* comandos disponíveis:
+ - /start: Para me trazer ao caos.
+ - /help: Te envio essa msgm no privado.
+ - /help <comando>: Te envio tudo que precisas saber sobre o comando.
+ - /donate: Pras fadas da caridade que desejam me doar money (estou sempre precisando).
  - /settings:
-   - in PM: will send you your settings for all supported modules.
-   - in a group: will redirect you to pm, with all that chat's settings.
+   - No privado: Te enviarei as configurações de todos comandos disponíveis.
+   - Em um grupo: Redirecionarei para o seu privado todas informações sobre os comandos disponíveis.
 
 {}
-And the following:
-""".format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n")
+È bom lembrar que:
+""".format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nTodos comandos podem usardos com / ou !.\n")
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
-It took lots of work for [my creator](https://telegram.dog/SonOfLars) to get me to where I am now, and every donation helps \
-motivate him to make me even better. All the donation money will go to a better VPS to host me, and/or beer \
-(see his bio!). He's just a poor student, so every little helps!"""
+DONATE_STRING = """Bixa, tou super feliz que você quer ser minha madrinha!
+Você pode contatar meu criador original: @SonOfLars, mas é bom manjar do inglês viu bitch \
+A tradução e o glitter por toda parte são idéias do @fabricioo, mas se realmente quiser contribuir com este projeto contate o @SonOfLars  \
+Qualquer ajuda é bem vinda viu? ele é um estudante pobre que mantém isso aqui funcionando em uma VPS cara pra caralho, então ajuda o dad supremo"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -62,7 +69,7 @@ for module_name in ALL_MODULES:
     if not imported_module.__mod_name__.lower() in IMPORTED:
         IMPORTED[imported_module.__mod_name__.lower()] = imported_module
     else:
-        raise Exception("Can't have two modules with the same name! Please change one")
+        raise Exception("Viadooo, não posso trabalhar com dois comandos ao mesmo tempo, escolhe um... ")
 
     if hasattr(imported_module, "__help__") and imported_module.__help__:
         HELPABLE[imported_module.__mod_name__.lower()] = imported_module
@@ -133,11 +140,10 @@ def start(bot: Bot, update: Update, args: List[str]):
         else:
             first_name = update.effective_user.first_name
             update.effective_message.reply_text(
-                # PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
-                "no one gonna help you 🤣🤣🤣🤣",
+                PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
                 parse_mode=ParseMode.MARKDOWN)
     else:
-        update.effective_message.reply_text("no one gonna help you 🤣🤣🤣🤣")
+        update.effective_message.reply_text("Yo, whadup?")
 
 
 # for test purposes
